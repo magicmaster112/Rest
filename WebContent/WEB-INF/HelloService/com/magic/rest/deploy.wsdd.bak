@@ -1,0 +1,38 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from HelloService WSDL service -->
+
+  <service name="Hello" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://rest.magic.com"/>
+      <parameter name="wsdlServiceElement" value="HelloService"/>
+      <parameter name="schemaQualified" value="http://rest.magic.com"/>
+      <parameter name="wsdlServicePort" value="Hello"/>
+      <parameter name="className" value="com.magic.rest.HelloSoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="Hello"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="getTrackInJSON" qname="operNS:getTrackInJSON" xmlns:operNS="http://rest.magic.com" returnQName="retNS:getTrackInJSONReturn" xmlns:retNS="http://rest.magic.com" returnType="rtns:Track" xmlns:rtns="http://rest.magic.com" soapAction="" >
+        <parameter qname="pns:title" xmlns:pns="http://rest.magic.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:name" xmlns:pns="http://rest.magic.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <parameter name="allowedMethods" value="getTrackInJSON"/>
+
+      <typeMapping
+        xmlns:ns="http://rest.magic.com"
+        qname="ns:Track"
+        type="java:com.magic.rest.Track"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+  </service>
+</deployment>
